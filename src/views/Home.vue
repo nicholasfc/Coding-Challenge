@@ -9,6 +9,9 @@
           v-model="search"
         />
       </div>
+      <div class="filter-wrapper">
+        <v-select :options="options" v-model="filter" :change="filterCountry(filter)"></v-select>
+      </div>
     </div>
     <div class="content">
       <div
@@ -66,6 +69,16 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    filterCountry(param) {
+      axios
+        .get(`https://restcountries.eu/rest/v2/region/${param}`)
+        .then(res => {
+          this.countries = res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   beforeCreate() {
@@ -95,6 +108,7 @@ export default {
   img {
     width: 100%;
     height: auto;
+    overflow: hidden;
   }
 }
 
@@ -115,6 +129,12 @@ export default {
 
 .search {
   padding: 20px 50px 20px 50px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter-wrapper {
+  width: 20%;
 }
 
 .search-wrapper {
