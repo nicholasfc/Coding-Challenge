@@ -71,20 +71,25 @@ export default {
         });
     },
     filterCountry(param) {
-      axios
-        .get(`https://restcountries.eu/rest/v2/region/${param}`)
-        .then(res => {
+      if (param === null) {
+        axios.get("https://restcountries.eu/rest/v2/all").then(res => {
           this.countries = res.data;
-        })
-        .catch(err => {
-          console.log(err);
         });
+      } else {
+        axios
+          .get(`https://restcountries.eu/rest/v2/region/${param}`)
+          .then(res => {
+            this.countries = res.data;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     }
   },
   beforeCreate() {
-    axios.get("https://restcountries.eu/rest/v2/all").then(response => {
-      this.loading = false;
-      this.countries = response.data;
+    axios.get("https://restcountries.eu/rest/v2/all").then(res => {
+      this.countries = res.data;
     });
   }
 };
